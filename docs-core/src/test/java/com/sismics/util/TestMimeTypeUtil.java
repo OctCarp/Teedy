@@ -16,6 +16,27 @@ import java.nio.file.Paths;
 public class TestMimeTypeUtil {
     @Test
     public void test() throws Exception {
+
+        boolean practice = true;
+        if (practice) {
+            String res;
+            res = MimeTypeUtil.getFileExtension(MimeType.IMAGE_PNG);
+            res = MimeTypeUtil.getFileExtension(MimeType.IMAGE_JPEG);
+            res = MimeTypeUtil.getFileExtension(MimeType.IMAGE_GIF);
+            res = MimeTypeUtil.getFileExtension(MimeType.APPLICATION_ZIP);
+            res = MimeTypeUtil.getFileExtension(MimeType.APPLICATION_PDF);
+            res = MimeTypeUtil.getFileExtension(MimeType.OPEN_DOCUMENT_TEXT);
+            res = MimeTypeUtil.getFileExtension(MimeType.OFFICE_DOCUMENT);
+            res = MimeTypeUtil.getFileExtension(MimeType.OFFICE_PRESENTATION);
+            res = MimeTypeUtil.getFileExtension(MimeType.OFFICE_SHEET);
+            res = MimeTypeUtil.getFileExtension(MimeType.TEXT_PLAIN);
+            res = MimeTypeUtil.getFileExtension(MimeType.TEXT_CSV);
+            res = MimeTypeUtil.getFileExtension(MimeType.VIDEO_WEBM);
+            res = MimeTypeUtil.getFileExtension(MimeType.VIDEO_MP4);
+            res = MimeTypeUtil.getFileExtension(MimeType.DEFAULT);
+            Assert.assertNotNull(res);
+        }
+
         // Detect ODT files
         Path path = Paths.get(ClassLoader.getSystemResource("file/document.odt").toURI());
         Assert.assertEquals(MimeType.OPEN_DOCUMENT_TEXT, MimeTypeUtil.guessMimeType(path, "document.odt"));
