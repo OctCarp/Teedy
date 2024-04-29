@@ -3,12 +3,22 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+                sh 'mvn clean install -B --no-transfer-progress'
+            }
+        }
+        stage('Doc'){
+            steps {
+                junit '**/target/surefire-reports/TEST-*.xml'
             }
         }
         stage('pmd') {
             steps {
                 sh 'mvn pmd:pmd'
+            }
+        }
+        stage('Test Report') {
+            steps {
+                sh 'mvn javadoc:jar'
             }
         }
     }
