@@ -3,22 +3,22 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                sh 'mvn clean install -B --no-transfer-progress'
+                bat 'mvn -B -DskipTests clean package'
             }
         }
-        stage('Doc'){
+        stage('Doc') {
             steps {
-                junit '**/target/surefire-reports/TEST-*.xml'
+                bat 'mvn javadoc:jar --fail-never'
             }
         }
         stage('pmd') {
             steps {
-                sh 'mvn pmd:pmd'
+                bat 'mvn pmd:pmd --fail-never'
             }
         }
-        stage('Test Report') {
+        stage('Test Report'){
             steps {
-                sh 'mvn javadoc:jar'
+                bat 'mvn test'
             }
         }
     }
@@ -26,8 +26,13 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
+            archiveArtifacts artifacts: '**/target/TEST-*.xml', fingerprint: true
             archiveArtifacts artifacts: '**/target/**/*.jar', fingerprint: true
             archiveArtifacts artifacts: '**/target/**/*.war', fingerprint: true
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+            archiveArtifacts artifacts: '**/target/site/apidocs/**', fingerprint: true
+            archiveArtifacts artifacts: '**/target/surefire-reports/**', fingerprint: true
         }
     }
 }

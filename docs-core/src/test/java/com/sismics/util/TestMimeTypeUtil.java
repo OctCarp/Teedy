@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 /**
  * Test of the utilities to check MIME types.
- * 
+ *
  * @author bgamard
  */
 public class TestMimeTypeUtil {
