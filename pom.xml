@@ -129,7 +129,7 @@
           <!-- printFailingErrors is pretty useful -->
           <printFailingErrors>true</printFailingErrors>
           <rulesets>
-            <ruleset>./config/practice-answer.xml</ruleset>
+            <ruleset>./cs304-practice/week7-practice-answer.xml</ruleset>
           </rulesets>
         </configuration>
         <executions>

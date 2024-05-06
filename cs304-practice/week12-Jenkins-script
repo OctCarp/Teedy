@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    stages{
+        stage('Package') {
+            steps {
+                    checkout scmGit(branches: [[name: '*/b-12110304']], extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/OctCarp/Teedy.git']])
+                    bat 'mvn -B -DskipTests clean package'
+            }
+        }
+        
+        // Building Docker images
+        stage('Building image') {
+            steps{
+                bat 'docker build -t cs304_week12 .'
+            }
+        }
+        
+        // Uploading Docker images into Docker Hub
+        stage('Upload image') {
+            steps{
+                bat 'docker login'
+                bat 'docker tag cs304_week12 octcarp/cs304_week12'
+                bat 'docker push octcarp/cs304_week12'
+            }
+        }
+        
+        //Running Docker container
+        stage('Run containers'){
+            steps{
+                script{
+                    bat 'docker pull octcarp/cs304_week12:latest'
+                    bat 'docker run -d -p 8082:8080 --name teedy_manual01 octcarp/cs304_week12'
+                    bat 'docker run -d -p 8083:8080 --name teedy_manual02 octcarp/cs304_week12'
+                    bat 'docker run -d -p 8084:8080 --name teedy_manual03 octcarp/cs304_week12'
+                
+                }
+            }
+        }
+    }
+}
