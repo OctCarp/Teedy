@@ -1,38 +1,18 @@
 pipeline {
-    agent any
+agent any
     stages {
-        stage('Build') { 
+        stage('Build') {
             steps {
                 bat 'mvn -B -DskipTests clean package'
             }
         }
-        stage('Doc') {
-            steps {
-                bat 'mvn javadoc:jar --fail-never'
-            }
-        }
-        stage('pmd') {
-            steps {
-                bat 'mvn pmd:pmd --fail-never'
-            }
-        }
-        stage('Test Report'){
-            steps {
-                bat 'mvn test'
-            }
-        }
-    }
 
-    post {
-        always {
-            archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
-            archiveArtifacts artifacts: '**/target/TEST-*.xml', fingerprint: true
-            archiveArtifacts artifacts: '**/target/**/*.jar', fingerprint: true
-            archiveArtifacts artifacts: '**/target/**/*.war', fingerprint: true
-            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-            archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
-            archiveArtifacts artifacts: '**/target/site/apidocs/**', fingerprint: true
-            archiveArtifacts artifacts: '**/target/surefire-reports/**', fingerprint: true
+        stage('K8s') {
+            steps {
+                bat 'kubectl delete deployment hello-node'
+                bat 'kubectl create deployment hello-node --image=octcarp/cs304_week12'
+                // bat 'kubectl set image deployments/hello-node cs304_week13_con=octcarp/cs304_week12'
+            }
         }
     }
 }
